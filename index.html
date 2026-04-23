@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parola Entropi Analizörü</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Parola Entropi Analizörü</h2>
+
+        <div class="input-container">
+            <input type="password" id="passwordInput" placeholder="Bir parola girin..." maxlength="64">
+            <button id="toggleBtn" class="toggle-btn">Göster</button>
+        </div>
+
+        <div class="progress-bar">
+            <div id="strengthBar" class="strength-fill"></div>
+        </div>
+
+        <div class="results">
+            <p>Entropi Skoru: <span id="entropyScore">0</span> bit</p>
+            <p>Tahmini Kırılma Süresi: <span id="crackTime">-</span></p>
+        </div>
+
+        <div class="breach-check-module">
+            <button id="checkBreachBtn" class="breach-btn">Sızdırılma Kontrolü Yap (HIBP API)</button>
+            <p id="breachResult" class="breach-result"></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
