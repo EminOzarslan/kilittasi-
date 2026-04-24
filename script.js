@@ -171,7 +171,7 @@ checkBreachBtn.addEventListener('click', async function () {
 
 
         if (isBreached) {
-            breachResult.textContent = `🚨 TEHLİKE: Bu parola daha önce ${breachCount} kez veri ihlallerinde sızdırılmış! ASLA KULLANMAYIN!`;
+            breachResult.textContent = " TEHLİKE: Bu parola daha önce ${breachCount} kez veri ihlallerinde sızdırılmış! ASLA KULLANMAYIN!";
             breachResult.style.color = "#ff4d4d";
 
             strengthBar.style.width = '100%';
@@ -179,7 +179,7 @@ checkBreachBtn.addEventListener('click', async function () {
             entropyScoreDisplay.textContent = '0 (Sızdırılmış!)';
             crackTimeDisplay.textContent = 'Anında kırılır (Sözlükte var)';
         } else {
-            breachResult.textContent = "✅ TEMİZ: Bu parola bilinen hiçbir sızıntıya karışmamış.";
+            breachResult.textContent = " TEMİZ: Bu parola bilinen hiçbir sızıntıya karışmamış.";
             breachResult.style.color = "#00FF00";
         }
 
