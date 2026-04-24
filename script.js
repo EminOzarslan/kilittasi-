@@ -118,23 +118,19 @@ passwordInput.addEventListener('input', function () {
 
 
 
-// --- YENİ MODÜL: K-ANONYMITY İLE SIZINTI KONTROLÜ ---
 
 const checkBreachBtn = document.getElementById('checkBreachBtn');
 const breachResult = document.getElementById('breachResult');
 
-// Metni SHA-1 Hash'ine çeviren modern Web Crypto fonksiyonu
 async function getSHA1Hash(text) {
     const encoder = new TextEncoder();
     const data = encoder.encode(text);
     const hashBuffer = await crypto.subtle.digest('SHA-1', data);
     const hashArray = Array.from(new Uint8Array(hashBuffer));
-    // Array'i alıp büyük harfli hexadecimal bir stringe çeviriyoruz
     const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('').toUpperCase();
     return hashHex;
 }
 
-// Butona tıklandığında çalışacak asıl olay
 checkBreachBtn.addEventListener('click', async function () {
     const password = passwordInput.value;
 
@@ -145,27 +141,22 @@ checkBreachBtn.addEventListener('click', async function () {
     }
 
     breachResult.textContent = "Sorgulanıyor... (k-Anonymity devrede)";
-    breachResult.style.color = "#ffa500"; // Turuncu (Bekleme)
+    breachResult.style.color = "#ffa500";
 
     try {
-        // 1. Şifrenin Hash'ini al
         const fullHash = await getSHA1Hash(password);
 
-        // 2. Hash'i böl: İlk 5 karakter (Prefix) ve Geri Kalan (Suffix)
         const prefix = fullHash.substring(0, 5);
         const suffix = fullHash.substring(5);
 
-        // 3. SADECE İLK 5 KARAKTERİ HIBP API'sine yolla
         const response = await fetch(`https://api.pwnedpasswords.com/range/${prefix}`);
         const data = await response.text();
 
-        // 4. Gelen yanıtları satır satır böl (Her satır: HASH_KUYRUGU:SIZDIRILMA_SAYISI şeklindedir)
         const hashes = data.split('\n');
 
         let isBreached = false;
         let breachCount = 0;
 
-        // 5. Gelen listedeki kuyrukları bizim gizli kuyruğumuzla (suffix) karşılaştır
         for (let i = 0; i < hashes.length; i++) {
             const line = hashes[i].split(':');
             const returnedSuffix = line[0];
@@ -178,16 +169,13 @@ checkBreachBtn.addEventListener('click', async function () {
             }
         }
 
-        // 6. Sonucu Ekrana Yazdır
-       
-        // Eğer şifre sızdırılmışsa, entropi çubuğunu ne kadar yeşil olursa olsun KIRMIZIYA çak!
+
         if (isBreached) {
             breachResult.textContent = `🚨 TEHLİKE: Bu parola daha önce ${breachCount} kez veri ihlallerinde sızdırılmış! ASLA KULLANMAYIN!`;
             breachResult.style.color = "#ff4d4d";
 
-            // Çubuğu ve skoru zorla sıfırla/kırmızı yap
             strengthBar.style.width = '100%';
-            strengthBar.style.backgroundColor = '#ff4d4d'; // Kıpkırmızı
+            strengthBar.style.backgroundColor = '#ff4d4d';
             entropyScoreDisplay.textContent = '0 (Sızdırılmış!)';
             crackTimeDisplay.textContent = 'Anında kırılır (Sözlükte var)';
         } else {
